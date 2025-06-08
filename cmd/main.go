@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 	"github.com/polyk005/magazin"
 	"github.com/polyk005/magazin/pkg/handler"
 	"github.com/polyk005/magazin/pkg/repository"
@@ -13,7 +14,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Starting server...")
+	fmt.Println("Starting server...\n")
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 
 	if err := initConfig(); err != nil {
