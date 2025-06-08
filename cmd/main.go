@@ -7,10 +7,10 @@ import (
 	"github.com/joho/godotenv"
 	"context"
 	"github.com/gin-gonic/gin"
-	"github.com/polyk005/magazin/pkg/server"
-	"github.com/polyk005/magazin/pkg/handler"
 	"github.com/polyk005/magazin/pkg/repository"
 	"github.com/polyk005/magazin/pkg/service"
+	"github.com/polyk005/magazin/pkg/handler"
+	"github.com/polyk005/magazin/pkg/server"
 )
 
 func main() {
@@ -25,6 +25,23 @@ func main() {
 		logrus.Fatalf("error loading env variables: %s", err.Error())
 	}
 
+	db, err := repository.NewPostgresDB(repository.Config{
+		Host: viper.GetString("db.host"),
+		Port: viper.GetString("db.port"),
+		Username: viper.GetString("db.username"),
+		DBName: viper.GetString("db.dbname"),
+		SSLMode: viper.GetString("db.sslmode"),
+		Password: viper.GetString("db.password"),
+	})
+	
+	if err != nil {
+		logrus.Fatalf("error occured while opening DB: %s", err.Error())
+	}
+
+	repos := repository.NewRepository(db)
+	services := service.NewService(repos)
+	handlers := handler.NewHandler(services)
+	
 	srv := new(magazin.Server)
 	if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 		logrus.Fatalf("error occured while running http server: %s", err.Error())
