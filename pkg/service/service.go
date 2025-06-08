@@ -1,5 +1,7 @@
 package service
 
+import "github.com/polyk005/magazin/pkg/repository"
+
 type Authorization interface {
 }
 

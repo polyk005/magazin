@@ -1,10 +1,6 @@
 package repository
 
-import (
-	"github.com/jmoiron/sqlx"
-	"github.com/polyk005/magazin/pkg/model"
-	"github.com/polyk005/magazin/pkg/repository/postgres"
-)	
+import "github.com/jmoiron/sqlx"
 
 type Authorization interface {
 }
